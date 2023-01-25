@@ -116,7 +116,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <img src="{{asset('adminlte/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">Alexander Pierce</a>
+                        <a href="#" class="d-block">{{Auth::user()->name}}</a>
                         <a class="d-block" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                             {{ __('Logout') }}
@@ -133,15 +133,52 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-
+                        @if (Auth::user()->role == "admin")
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="{{route('pulau.index')}}" class="nav-link">
                                 <i class="nav-icon fas fa-edit"></i>
                                 <p>
-                                    Transaksi
+                                    Master Pulau
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{route('provinsi.index')}}" class="nav-link">
+                                <i class="nav-icon fas fa-edit"></i>
+                                <p>
+                                    Master Provinsi
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('kota.index')}}" class="nav-link">
+                                <i class="nav-icon fas fa-edit"></i>
+                                <p>
+                                    Master Kota
+                                </p>
+                            </a>
+                        </li>
+                        @endif
+                        @if (Auth::user()->role == "pegawai")
+                        <li class="nav-item">
+                            <a href="{{route('user.index')}}" class="nav-link">
+                                <i class="nav-icon fas fa-edit"></i>
+                                <p>
+                                    Index User
+                                </p>
+                            </a>
+                        </li>
+                        @endif
+                        @if (Auth::user()->role == "divisi-sdm")
+                        <li class="nav-item">
+                            <a href="{{route('divisisdm.index')}}" class="nav-link">
+                                <i class="nav-icon fas fa-edit"></i>
+                                <p>
+                                    Index Divisi SDM
+                                </p>
+                            </a>
+                        </li>
+                        @endif
 
                     </ul>
                 </nav>
@@ -173,9 +210,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             <!-- Main content -->
             <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col">
+                            <!-- <div class="alert alert-danger" role="alert">
+                                This is a danger alert—check it out!
+                            </div> -->
+                            @if (Session::has('sukses'))
+                            <div class="alert alert-success" role="alert">
+                                {{Session::get('sukses')}}
+                            </div>
+                            @endif
+                            @if (Session::has('gagal'))
+                            <div class="alert alert-danger" role="alert">
+                                {{Session::get('gagal')}}
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
 
                 @yield('content')
-
             </div>
             <!-- /.content -->
         </div>

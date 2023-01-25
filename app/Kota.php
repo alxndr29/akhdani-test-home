@@ -3,16 +3,21 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Kota extends Model
 {
-    use SoftDeletes;
-    protected $dates = ['deleted_at'];
-    protected $table = 'kota';
-    protected $primaryKey = 'id';
-
-    public function perdin(){
-        return $this->hasMany(Perdin::class);
+    //
+    protected $table = "kota";
+    public function provinsi()
+    {
+        return $this->belongsTo(Provinsi::class, 'id_provinsi');
+    }
+    public function perdin_kota_asal()
+    {
+        return $this->hasMany(Perdin::class,'kota_asal');
+    }
+    public function perdin_kota_tujuan()
+    {
+        return $this->hasMany(Perdin::class, 'kota_tujuan');
     }
 }

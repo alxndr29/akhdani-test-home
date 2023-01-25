@@ -15,12 +15,9 @@ class CreateKotaTable extends Migration
     {
         Schema::create('kota', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_kota');
-            $table->string('provinsi');
-            $table->string('pulau');
-            $table->boolean('luar_negeri');
-            $table->string('latitude');
-            $table->string('longitude');
+            $table->string('nama');
+            $table->unsignedBigInteger('id_provinsi');
+            $table->foreign('id_provinsi')->references('id')->on('provinsi');
             $table->timestamps();
         });
     }

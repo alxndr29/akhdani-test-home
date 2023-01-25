@@ -3,19 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Kota;
-use App\Provinsi;
 use App\Pulau;
 
-class KotaController extends Controller
+class PulauController extends Controller
 {
     //
     public function index()
     {
-        $kota = Kota::all();
         $pulau = Pulau::all();
-        $provinsi = Provinsi::all();
-        return view('admin.kota', compact('pulau', 'kota', 'provinsi'));
+        return view('admin.pulau', compact('pulau'));
     }
     public function store(Request $request)
     {
@@ -23,17 +19,9 @@ class KotaController extends Controller
             'nama' => 'required'
         ]);
         try {
-            $kota = new Kota();
-            $kota->nama = $request->get('nama');
-            $kota->id_provinsi = $request->get('provinsi');
-            if ($request->has('luar-negeri')) {
-                $kota->luar_negeri = 1;
-            } else {
-                $kota->luar_negeri = 0;
-            }
-            $kota->latitude = $request->get('latitude');
-            $kota->longitude = $request->get('longitude');
-            $kota->save();
+            $pulau = new Pulau();
+            $pulau->nama = $request->get('nama');
+            $pulau->save();
             return redirect()->back()->with('sukses', 'Berhasil Tambah Data Baru');
         } catch (\Exception $e) {
             return redirect()->back()->with('gagal', $e->getMessage());
@@ -41,7 +29,7 @@ class KotaController extends Controller
     }
     public function edit($id)
     {
-        $data = Kota::where('id', $id)->with(['Provinsi'])->first();
+        $data = Pulau::find($id)->first();
         return response()->json([
             'data' => $data
         ]);
@@ -52,12 +40,9 @@ class KotaController extends Controller
             'nama' => 'required'
         ]);
         try {
-            $kota = Kota::find($id);
-            $kota->nama = $request->get('nama');
-            $kota->id_provinsi = $request->get('provinsi');
-            $kota->latitude = $request->get('latitude');
-            $kota->longitude = $request->get('longitude');
-            $kota->save();
+            $pulau = Pulau::find($id);
+            $pulau->nama = $request->get('nama');
+            $pulau->save();
             return redirect()->back()->with('sukses', 'Berhasil Ubah Data');
         } catch (\Exception $e) {
             return redirect()->back()->with('gagal', $e->getMessage());
@@ -66,8 +51,8 @@ class KotaController extends Controller
     public function delete($id)
     {
         try {
-            $kota = Kota::find($id);
-            $kota->delete();
+            $pulau = Pulau::find($id);
+            $pulau->delete();
             return redirect()->back()->with('sukses', 'Berhasil Hapus Data');
         } catch (\Exception $e) {
             return redirect()->back()->with('gagal', $e->getMessage());

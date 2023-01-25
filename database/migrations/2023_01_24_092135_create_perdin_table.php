@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKotaPerdin extends Migration
+class CreatePerdinTable extends Migration
 {
     /**
      * Run the migrations.
@@ -22,7 +22,10 @@ class CreateKotaPerdin extends Migration
             $table->date('tanggal_awal');
             $table->date('tanggal_akhir');
             $table->string('keterangan');
-            $table->enum('status',['setuju','tolak']);
+            $table->double('jarak');
+            $table->double('total_uang');
+            $table->integer('total_hari');
+            $table->enum('status', ['setuju', 'tolak']);
             $table->timestamps();
         });
     }
@@ -34,6 +37,6 @@ class CreateKotaPerdin extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kota_perdin');
+        Schema::dropIfExists('perdin');
     }
 }

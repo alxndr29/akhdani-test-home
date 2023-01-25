@@ -2,108 +2,93 @@
 
 namespace App\Http\Controllers;
 
+use App\Kota;
+use App\Perdin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PerdinController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    //
+    public function indexPegawai()
     {
-        //
+        $kota = Kota::all();
+        $perdin = Perdin::where('id_user',Auth::user()->id)->get();
+        return view('user.index', compact('kota', 'perdin'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function storePegawai(Request $request)
     {
-        //
+        $asal = Kota::where('id', $request->get('kota_asal'))->first();
+        $tujuan = Kota::where('id', $request->get('kota_tujuan'))->first();
+        $jarak = $this->haversineGreatCircleDistance($asal->latitude, $asal->longitude, $tujuan->latitude, $tujuan->longitude);
+        // return $jarak;
+        $uang = 0;
+        if ($jarak < 60) {
+            $uang = 0;
+        } else if ($jarak >= 60 && $asal->id_provinsi == $tujuan->id_provinsi) {
+            $uang = 200000 * $request->get('total_hari');
+        } else if ($jarak >= 60 && $asal->id_provinsi != $tujuan->id_provinsi && $asal->provinsi->pulau->id == $tujuan->provinsi->pulau->id && $asal->luar_negeri != 1 && $tujuan->luar_negeri != 1) {
+            $uang = 250000 * $request->get('total_hari');
+        } else if ($asal->luar_negeri == 1 || $tujuan->luar_negeri == 1) {
+            $usd = 14000 * 50;
+            $uang = $usd * $request->get('total_hari');
+        }
+
+        try {
+            $perdin = new Perdin();
+            $perdin->kota_asal = $request->get('kota_asal');
+            $perdin->kota_tujuan = $request->get('kota_tujuan');
+            $perdin->tanggal_awal = $request->get('tanggal_awal');
+            $perdin->tanggal_akhir = $request->get('tanggal_akhir');
+            $perdin->total_hari = $request->get('total_hari');
+            $perdin->keterangan = $request->get('keterangan');
+            $perdin->jarak = $jarak;
+            $perdin->total_uang = $uang;
+            $perdin->status = "pending";
+            $perdin->id_user = Auth::user()->id;
+            $perdin->save();
+            return redirect()->back()->with('sukses', 'Berhasil Tambah Data Baru');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('gagal', $e->getMessage());
+        }
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo)
     {
-        //
+        $earthRadius = 6371000;
+        $latFrom = deg2rad($latitudeFrom);
+        $lonFrom = deg2rad($longitudeFrom);
+        $latTo = deg2rad($latitudeTo);
+        $lonTo = deg2rad($longitudeTo);
+        $latDelta = $latTo - $latFrom;
+        $lonDelta = $lonTo - $lonFrom;
+        $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
+            cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
+        return round($angle * $earthRadius / 1000);
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function indexDivisiSdm()
     {
-        //
+        $pengajuan_baru = Perdin::where('status','pending')->get();
+        $history = Perdin::where('status','!=','pending')->get();
+        return view('divisi-sdm.index',compact('pengajuan_baru','history'));
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+    public function setuju($id){
+        try{
+            $perdin = Perdin::find($id);
+            $perdin->status = "setuju";
+            $perdin->save();
+            return redirect()->back()->with('sukses', 'Berhasil Ubah Status');
+        }catch(\Exception $e){
+            return redirect()->back()->with('gagal', $e->getMessage());
+        }
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-    public function getDistanceBetweenTwoPoints($point1, $point2)
-    {
-        // array of lat-long i.e  $point1 = [lat,long]
-        $earthRadius = 6371;  // earth radius in km
-        $point1Lat = $point1[0];
-        $point2Lat = $point2[0];
-        $deltaLat = deg2rad($point2Lat - $point1Lat);
-        $point1Long = $point1[1];
-        $point2Long = $point2[1];
-        $deltaLong = deg2rad($point2Long - $point1Long);
-        $a = sin($deltaLat / 2) * sin($deltaLat / 2) + cos(deg2rad($point1Lat)) * cos(deg2rad($point2Lat)) * sin($deltaLong / 2) * sin($deltaLong / 2);
-        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-        $distance = $earthRadius * $c;
-        return $distance;    // in km
-
-        // try {
-        //     $client = new GuzzleHttp\Client();
-        //     $request = new \GuzzleHttp\Psr7\Request('GET', 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=' . $latitude_origin . '%2C' . $longitude_destination . '&destinations=' . $value->latitude . '%2C' . $value->longitude . '&key=AIzaSyA1MgLuZuyqR_OGY3ob3M52N46TDBRI_9k');
-        //     $promise = $client->sendAsync($request)->then(function ($response) use ($value) {
-        //         $result = json_decode($response->getBody());
-        //         $value->jarak = $result->rows[0]->elements[0]->distance->text;
-        //     });
-        //     $promise->wait();
-        // } catch (\Exception $e) { }
+    public function tolak($id){
+        try {
+            $perdin = Perdin::find($id);
+            $perdin->status = "tolak";
+            $perdin->save();
+            return redirect()->back()->with('sukses', 'Berhasil Ubah Status');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('gagal', $e->getMessage());
+        }
     }
 }

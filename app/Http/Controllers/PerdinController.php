@@ -13,7 +13,7 @@ class PerdinController extends Controller
     public function indexPegawai()
     {
         $kota = Kota::all();
-        $perdin = Perdin::where('id_user',Auth::user()->id)->get();
+        $perdin = Perdin::where('id_user', Auth::user()->id)->get();
         return view('user.index', compact('kota', 'perdin'));
     }
     public function storePegawai(Request $request)
@@ -29,7 +29,9 @@ class PerdinController extends Controller
             $uang = 200000 * $request->get('total_hari');
         } else if ($jarak >= 60 && $asal->id_provinsi != $tujuan->id_provinsi && $asal->provinsi->pulau->id == $tujuan->provinsi->pulau->id && $asal->luar_negeri != 1 && $tujuan->luar_negeri != 1) {
             $uang = 250000 * $request->get('total_hari');
-        } else if ($asal->luar_negeri == 1 || $tujuan->luar_negeri == 1) {
+        } else if ($jarak >= 60 && $asal->id_provinsi != $tujuan->id_provinsi && $asal->provinsi->pulau->id != $tujuan->provinsi->pulau->id && $asal->luar_negeri != 1 && $tujuan->luar_negeri != 1) {
+            $uang = 300000 * $request->get('total_hari');
+         } else if ($asal->luar_negeri == 1 || $tujuan->luar_negeri == 1) {
             $usd = 14000 * 50;
             $uang = $usd * $request->get('total_hari');
         }
@@ -67,21 +69,23 @@ class PerdinController extends Controller
     }
     public function indexDivisiSdm()
     {
-        $pengajuan_baru = Perdin::where('status','pending')->get();
-        $history = Perdin::where('status','!=','pending')->get();
-        return view('divisi-sdm.index',compact('pengajuan_baru','history'));
+        $pengajuan_baru = Perdin::where('status', 'pending')->get();
+        $history = Perdin::where('status', '!=', 'pending')->get();
+        return view('divisi-sdm.index', compact('pengajuan_baru', 'history'));
     }
-    public function setuju($id){
-        try{
+    public function setuju($id)
+    {
+        try {
             $perdin = Perdin::find($id);
             $perdin->status = "setuju";
             $perdin->save();
             return redirect()->back()->with('sukses', 'Berhasil Ubah Status');
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return redirect()->back()->with('gagal', $e->getMessage());
         }
     }
-    public function tolak($id){
+    public function tolak($id)
+    {
         try {
             $perdin = Perdin::find($id);
             $perdin->status = "tolak";

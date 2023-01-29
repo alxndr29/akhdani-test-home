@@ -57,6 +57,11 @@ class KotaController extends Controller
             $kota->id_provinsi = $request->get('provinsi');
             $kota->latitude = $request->get('latitude');
             $kota->longitude = $request->get('longitude');
+            if ($request->has('luar-negeri')) {
+                $kota->luar_negeri = 1;
+            } else {
+                $kota->luar_negeri = 0;
+            }
             $kota->save();
             return redirect()->back()->with('sukses', 'Berhasil Ubah Data');
         } catch (\Exception $e) {

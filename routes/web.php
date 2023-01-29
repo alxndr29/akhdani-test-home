@@ -39,6 +39,12 @@ Route::middleware(['auth', 'cekadmin'])->group(function () {
     Route::post('/kota/store', 'KotaController@store')->name('kota.store');
     Route::put('kota/update/{id}', 'KotaController@update')->name('kota.update');
     Route::delete('kota/delete/{id}', 'KotaController@delete')->name('kota.delete');
+
+    Route::get('/masteruser', 'UserController@index')->name('masteruser.index');
+    Route::get('/masteruser/edit/{id}', 'UserController@edit')->name('masteruser.edit');
+    Route::post('/masteruser/store', 'UserController@store')->name('masteruser.store');
+    Route::put('/masteruser/update/{id}', 'UserController@update')->name('masteruser.update');
+    Route::delete('/masteruser/delete/{id}', 'UserController@destroy')->name('masteruser.deltete');
 });
 Route::middleware(['auth', 'cekpegawai'])->group(function () {
     Route::get('user', 'PerdinController@indexPegawai')->name('user.index');

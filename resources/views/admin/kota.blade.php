@@ -167,6 +167,10 @@
                     <div class="form-group">
                         <div id="map-edit" style="height: 300px; width:100%;"></div>
                     </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="luar-negeri-edit" name="luar-negeri">
+                        <label class="form-check-label" for="exampleCheck1">Luar Negeri</label>
+                    </div>
                     <input type="hidden" name="latitude" id="latitude-edit">
                     <input type="hidden" name="longitude" id="longitude-edit">
                     <button type="submit" class="btn btn-primary">Simpan</button>
@@ -232,6 +236,13 @@
                 $("#nama-edit").val(result.data.nama);
                 $("#pulau-edit").val(result.data.provinsi.id_pulau);
                 $("#provinsi-edit").val(result.data.id_provinsi);
+                $("#latitude-edit").val(result.data.latitude);
+                $("#longitude-edit").val(result.data.longitude);
+                if (result.data.luar_negeri == 1) {
+                    $("#luar-negeri-edit").prop('checked', true);
+                } else {
+                    $("#luar-negeri-edit").prop('checked', false);
+                }
                 if (map1 != null) {
                     map1.remove();
                 }

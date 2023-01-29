@@ -78,7 +78,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <table id="example1" class="table table-bordered table-striped text-center">
+                            <table id="example2" class="table table-bordered table-striped text-center">
                                 <thead>
                                     <tr>
                                         <th style="width:10%">No</th>
@@ -183,9 +183,14 @@
                         @if ($value->jarak >= 60 && $value->kota_perdin_asal->provinsi->id != $value->kota_perdin_tujuan->provinsi->id && $value->kota_perdin_asal->provinsi->pulau->id == $value->kota_perdin_tujuan->provinsi->pulau->id)
                         Rp. {{number_format(250000)}}.-/ Hari
                         <br>
-                        Jarak >= 60Km dan Pulau Sama.
+                        Jarak >= 60Km dan Beda Provinsi dan Pulau Sama.
                         @endif
-                        @if ($value->kota_perdin_asal->luar_negeri == 1 && $value->kota_perdin_tujuan->luar_negeri == 1)
+                        @if ($value->jarak >= 60 && $value->kota_perdin_asal->provinsi->id != $value->kota_perdin_tujuan->provinsi->id && $value->kota_perdin_asal->provinsi->pulau->id != $value->kota_perdin_tujuan->provinsi->pulau->id)
+                        Rp. {{number_format(300000)}}.-/ Hari
+                        <br>
+                        Jarak >= 60Km dan Pulau Beda dan Provinsi Beda.
+                        @endif
+                        @if ($value->kota_perdin_asal->luar_negeri == 1 || $value->kota_perdin_tujuan->luar_negeri == 1)
                         USD. {{number_format(50)}}.-/ Hari
                         <br>
                         Diluar Negeri.
@@ -195,6 +200,7 @@
                         Total Uang Perdin:
                         <br>
                         Rp. {{number_format($value->total_uang)}}
+
                     </div>
                 </div>
                 <div class="d-flex justify-content-center">

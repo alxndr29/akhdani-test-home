@@ -158,6 +158,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{route('masteruser.index')}}" class="nav-link">
+                                <i class="nav-icon fas fa-edit"></i>
+                                <p>
+                                    Master User
+                                </p>
+                            </a>
+                        </li>
                         @endif
                         @if (Auth::user()->role == "pegawai")
                         <li class="nav-item">

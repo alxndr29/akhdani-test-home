@@ -29,7 +29,7 @@ class PulauController extends Controller
     }
     public function edit($id)
     {
-        $data = Pulau::find($id)->first();
+        $data = Pulau::where('id', $id)->first();
         return response()->json([
             'data' => $data
         ]);

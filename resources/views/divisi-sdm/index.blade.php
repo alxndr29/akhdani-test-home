@@ -4,7 +4,7 @@
 <div class="container-fluid">
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Pengajuan Baru</a>
+            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Pengajuan Baru ({{count($pengajuan_baru)}})</a>
             <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">History Pengajuan</a>
         </div>
     </nav>
@@ -40,7 +40,9 @@
                                         <td style="width:10%">{{$key+1}}</td>
                                         <td>{{$value->user->name}}</td>
                                         <td>{{$value->kota_perdin_asal->nama}} -> {{$value->kota_perdin_tujuan->nama}}</td>
-                                        <td>{{$value->tanggal_awal}} - {{$value->tanggal_awal}} {{$value->total_hari}}</td>
+                                        <td>
+                                            {{\Carbon\Carbon::parse($value->tanggal_awal)->format('d F Y')}} - {{\Carbon\Carbon::parse($value->tanggal_awal)->format('d F Y')}} ({{$value->total_hari}}) Hari
+                                        </td>
                                         <td>{{$value->keterangan}}</td>
                                         <td>
                                             @if($value->status == "pending")
@@ -96,7 +98,9 @@
                                         <td style="width:10%">{{$key+1}}</td>
                                         <td>{{$value->user->name}}</td>
                                         <td>{{$value->kota_perdin_asal->nama}} -> {{$value->kota_perdin_tujuan->nama}}</td>
-                                        <td>{{$value->tanggal_awal}} - {{$value->tanggal_awal}} {{$value->total_hari}}</td>
+                                        <td>
+                                            {{\Carbon\Carbon::parse($value->tanggal_awal)->format('d F Y')}} - {{\Carbon\Carbon::parse($value->tanggal_awal)->format('d F Y')}} ({{$value->total_hari}}) Hari
+                                        </td>
                                         <td>{{$value->keterangan}}</td>
                                         <td>
                                             @if($value->status == "pending")

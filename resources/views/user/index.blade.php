@@ -38,6 +38,7 @@
                                 <th>Tanggal</th>
                                 <th>Keterangan</th>
                                 <th>Status</th>
+                              
                             </tr>
                         </thead>
                         <tbody style="vertical-align: top;">
@@ -56,6 +57,9 @@
                                     <span class="badge badge-danger">{{$value->status}}</span>
                                     @endif
                                 </td>
+                                <!-- <td>
+                                    <button type="button" onClick="detail({{$value->id}})" class="btn btn-primary">Detail</button>
+                                </td> -->
                             </tr>
                             @endforeach
                         </tbody>
@@ -155,5 +159,9 @@
             $("#total_hari").val(days);
         }
     });
+
+    function detail(id) {
+        alert(id);
+    }
 </script>
 @endsection

@@ -1,5 +1,6 @@
 <?php
 
+use App\Perdin;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,3 +56,14 @@ Route::middleware(['auth', 'cekdivisi'])->group(function () {
     Route::get('divisisdm/setuju/{id}', 'PerdinController@setuju')->name('divisisdm.setuju');
     Route::get('divisisdm/tolak/{id}', 'PerdinController@tolak')->name('divisisdm.tolak');
 });
+
+// Route::get('/coba', function () {
+//     $perdin = Perdin::where('id', 1)->first();
+//     return response()->json([
+//         'perdin' => $perdin,
+//         'kota' => $perdin->kota_perdin_asal->id,
+//         'kota1' => $perdin->kota_perdin_tujuan->id,
+//         'pulau' =>  $perdin->kota_perdin_tujuan->provinsi->pulau->nama,
+//         'provinsi' => $perdin->kota_perdin_tujuan->provinsi->nama
+//     ]);
+// });

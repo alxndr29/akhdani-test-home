@@ -41,7 +41,7 @@
                                         <td>{{$value->user->name}}</td>
                                         <td>{{$value->kota_perdin_asal->nama}} -> {{$value->kota_perdin_tujuan->nama}}</td>
                                         <td>
-                                            {{\Carbon\Carbon::parse($value->tanggal_awal)->format('d F Y')}} - {{\Carbon\Carbon::parse($value->tanggal_awal)->format('d F Y')}} ({{$value->total_hari}}) Hari
+                                            {{\Carbon\Carbon::parse($value->tanggal_awal)->format('d F Y')}} - {{\Carbon\Carbon::parse($value->tanggal_akhir)->format('d F Y')}} ({{$value->total_hari}}) Hari
                                         </td>
                                         <td>{{$value->keterangan}}</td>
                                         <td>
@@ -99,7 +99,7 @@
                                         <td>{{$value->user->name}}</td>
                                         <td>{{$value->kota_perdin_asal->nama}} -> {{$value->kota_perdin_tujuan->nama}}</td>
                                         <td>
-                                            {{\Carbon\Carbon::parse($value->tanggal_awal)->format('d F Y')}} - {{\Carbon\Carbon::parse($value->tanggal_awal)->format('d F Y')}} ({{$value->total_hari}}) Hari
+                                            {{\Carbon\Carbon::parse($value->tanggal_awal)->format('d F Y')}} - {{\Carbon\Carbon::parse($value->tanggal_akhir)->format('d F Y')}} ({{$value->total_hari}}) Hari
                                         </td>
                                         <td>{{$value->keterangan}}</td>
                                         <td>

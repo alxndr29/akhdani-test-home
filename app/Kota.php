@@ -13,7 +13,7 @@ class Kota extends Model
     protected $dates = ['deleted_at'];
     public function provinsi()
     {
-        return $this->belongsTo(Provinsi::class, 'id_provinsi');
+        return $this->belongsTo(Provinsi::class, 'id_provinsi')->withTrashed();
     }
     public function perdin_kota_asal()
     {

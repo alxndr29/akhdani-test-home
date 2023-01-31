@@ -38,7 +38,7 @@
                                 <th>Tanggal</th>
                                 <th>Keterangan</th>
                                 <th>Status</th>
-                              
+
                             </tr>
                         </thead>
                         <tbody style="vertical-align: top;">
@@ -46,7 +46,9 @@
                             <tr>
                                 <td style="width:10%">{{$key+1}}</td>
                                 <td>{{$value->kota_perdin_asal->nama}} -> {{$value->kota_perdin_tujuan->nama}}</td>
-                                <td>{{$value->tanggal_awal}} - {{$value->tanggal_awal}} {{$value->total_hari}}</td>
+                                <td>
+                                    {{\Carbon\Carbon::parse($value->tanggal_awal)->format('d F Y')}} - {{\Carbon\Carbon::parse($value->tanggal_akhir)->format('d F Y')}} ({{$value->total_hari}}) Hari
+                                </td>
                                 <td>{{$value->keterangan}}</td>
                                 <td>
                                     @if($value->status == "pending")

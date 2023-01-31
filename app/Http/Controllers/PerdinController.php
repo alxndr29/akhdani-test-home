@@ -70,6 +70,7 @@ class PerdinController extends Controller
     public function indexDivisiSdm()
     {
         $pengajuan_baru = Perdin::where('status', 'pending')->get();
+        // return $pengajuan_baru;
         $history = Perdin::where('status', '!=', 'pending')->get();
         return view('divisi-sdm.index', compact('pengajuan_baru', 'history'));
     }

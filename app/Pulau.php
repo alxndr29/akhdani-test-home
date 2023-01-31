@@ -12,6 +12,6 @@ class Pulau extends Model
     protected $dates = ['deleted_at'];
     public function provinsi()
     {
-        return $this->hasMany(Provinsi::class);
+        return $this->hasMany(Provinsi::class)->withTrashed();
     }
 }
